@@ -1,5 +1,5 @@
 //Responsable: Sebastian
-//  promps de IA usados en este archivo
+//  prompts de IA usados en este archivo
 
 // 1."Elabora el esqueleto de TablaSecuencias.h para una tabla hash con linear
 // probing que guarde secuencias de ADN. Define los atributos, el constructor con m = 10 y funciones
@@ -7,7 +7,7 @@
 
 //2. "Revisa mi avance de TablaSecuencias. No me des el codigo corregido, solo dime que esta bien, que falta y que podria fallar."
 
-//3. "ubica posibles errores de mi TablaSecuencias.h y señalame en que linea estaba, cada uno y por que era un error."
+//3. "ubica posibles errores de mi TablaSecuencias.h y senalame en que linea estaba, cada uno y por que era un error."
 
 #pragma once
 #include <iostream>
