@@ -1,0 +1,11 @@
+bin/
+obj/
+*.o
+*.exe
+GenomaHIV
+
+*.depend
+*.layout
+
+.DS_Store
+Thumbs.db
