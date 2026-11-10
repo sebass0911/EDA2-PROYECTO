@@ -9,7 +9,9 @@
 
 //3. "ubica posibles errores de mi TablaSecuencias.h y senalame en que linea estaba, cada uno y por que era un error."
 
-#pragma once
+#ifndef TABLASECUENCIAS_H
+#define TABLASECUENCIAS_H
+
 #include <iostream>
 #include <string>
 #include "DNASequence.h"
@@ -19,19 +21,18 @@ using namespace std;
 class TablaSecuencias {
 private:
     vector<DNASequence> tabla;
-    vector<bool> ocupado;
     int m;                       // numero de bins
     int n;                       // numero de secuencias guardadas
-    long long sondeos;
+    int sondeos;
     int numRehash;
 
 
     int hashFunction(const string& id) {
-        unsigned long long h = 0;
+        int h = 0;
         for (size_t i = 0; i < id.length(); i++) {
-            h = (h * 31 + (unsigned char)id[i]) % m;
+            h = (h * 31 + id[i]) % m;
         }
-        return (int)h;
+        return h;
     }
 
     // true si x es primo
@@ -53,28 +54,25 @@ private:
     int colocar(const DNASequence& s) {
         int i = hashFunction(s.id);
         int revisados = 1;
-        while (ocupado[i]) {
+        while (tabla[i].id != "") {
             i = (i + 1) % m;
             revisados++;
         }
         tabla[i] = s;
-        ocupado[i] = true;
         n++;
         return revisados;
     }
 
     void rehash() {
         vector<DNASequence> viejaTabla = tabla;
-        vector<bool> viejoOcupado = ocupado;
         int viejoM = m;
 
         m = siguientePrimo(2 * n);
-        tabla.assign(m, DNASequence());
-        ocupado.assign(m, false);
+        tabla = vector<DNASequence>(m);
         n = 0;
 
         for (int i = 0; i < viejoM; i++) {
-            if (viejoOcupado[i]) colocar(viejaTabla[i]);
+            if (viejaTabla[i].id != "") colocar(viejaTabla[i]);
         }
         numRehash++;
 
@@ -92,8 +90,7 @@ public:
         sondeos = 0;
         numRehash = 0;
         verbose = false;
-        tabla.resize(m);
-        ocupado.assign(m, false);
+        tabla = vector<DNASequence>(m);
     }
 
     bool insertar(const DNASequence& s) {
@@ -109,7 +106,7 @@ public:
     DNASequence* buscar(const string& id) {
         int i = hashFunction(id);
         for (int revisados = 0; revisados < m; revisados++) {
-            if (!ocupado[i]) return nullptr;
+            if (tabla[i].id == "") return nullptr;
             if (tabla[i].id == id) return &tabla[i];
             i = (i + 1) % m;
         }
@@ -119,7 +116,7 @@ public:
     int tamano() { return m; }
     int cantidad() { return n; }
     double factorCarga() { return (double)n / m; }
-    long long totalSondeos() { return sondeos; }
+    int totalSondeos() { return sondeos; }
     int totalRehash() { return numRehash; }
 
     double promedioSondeosInsercion() {
@@ -129,9 +126,9 @@ public:
 
     double promedioSondeosBusqueda() {
         if (n == 0) return 0;
-        long long total = 0;
+        int total = 0;
         for (int j = 0; j < m; j++) {
-            if (!ocupado[j]) continue;
+            if (tabla[j].id == "") continue;
             int i = hashFunction(tabla[j].id);
             int revisados = 1;
             while (i != j) {
@@ -154,10 +151,12 @@ public:
 
     void mostrarTabla() {
         for (int i = 0; i < m; i++) {
-            if (ocupado[i]) {
+            if (tabla[i].id != "") {
                 cout << "Bin " << i << ": " << tabla[i].id
                      << " (" << tabla[i].sequence.length() << " nt)" << endl;
             }
         }
     }
 };
+
+#endif

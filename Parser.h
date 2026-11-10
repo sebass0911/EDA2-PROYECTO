@@ -1,7 +1,9 @@
 //Responsable: Alessandro
 //  Prompts de IA usados en este archivo
 //
-#pragma once
+#ifndef PARSER_H
+#define PARSER_H
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -20,3 +22,5 @@ vector<DNASequence> leerFasta(const string& ruta) {
 
     return secuencias;
 }
+
+#endif
