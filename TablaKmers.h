@@ -1,12 +1,9 @@
 // Responsable: Sebastian
 // Prompts de IA usados en este archivo (obligatorio segun el enunciado):
 
-// 1. "Revisa mi TablaKmers.h: verifica que h2 sea siempre impar y que la ventana
-// saque bien los k-mers. Senalame los errores."
+// 1. "eevisa mi TablaKmers.h: verifica que h2 sea siempre impar y que la ventana saque bien los k-mers. Senalame los errores."
 
-
-// 2. "Generame la funcion obtenerTodos() para pasar los k-mers al max-heap y
-// explicame como funciona cada funcion."
+// 2. "Generame la funcion obtenerTodos() para pasar los k-mers al max-heap y explicame como funciona cada funcion."
 
 #ifndef TABLAKMERS_H
 #define TABLAKMERS_H
