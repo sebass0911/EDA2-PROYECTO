@@ -1,59 +1,84 @@
-//Responsable: Alessandro
-//Prompts de IA usados en este archivo (obligatorio segun el enunciado):
-
-#ifndef MAXHEAP_H
-#define MAXHEAP_H
+#ifndef MAXHEAP_H_INCLUDED
+#define MAXHEAP_H_INCLUDED
 
 #include <iostream>
-#include <string>
 #include <vector>
+#include <string>
 #include "TablaKmers.h"
-using namespace std;
 
 class MaxHeap {
 private:
-    vector<KmerConteo> heap;
-
-    int parent(int i) { return (i - 1) / 2; }
-    int left(int i)   { return 2 * i + 1; }
-    int right(int i)  { return 2 * i + 2; }
+    std::vector<KmerConteo> datos;
 
     void heapifyUp(int i) {
-        // TODO (Alessandro)
+        while (i > 0) {
+            int padre = (i - 1) / 2;
+            if (datos[i].conteo > datos[padre].conteo) {
+                KmerConteo tmp = datos[i];
+                datos[i] = datos[padre];
+                datos[padre] = tmp;
+                i = padre;
+            } else {
+                break;
+            }
+        }
     }
 
     void heapifyDown(int i) {
-        // TODO (Alessandro)
+        int n = datos.size();
+        while (true) {
+            int izq = 2 * i + 1;
+            int der = 2 * i + 2;
+            int mayor = i;
+            if (izq < n && datos[izq].conteo > datos[mayor].conteo) {
+                mayor = izq;
+            }
+            if (der < n && datos[der].conteo > datos[mayor].conteo) {
+                mayor = der;
+            }
+            if (mayor == i) break;
+            KmerConteo tmp = datos[i];
+            datos[i] = datos[mayor];
+            datos[mayor] = tmp;
+            i = mayor;
+        }
     }
 
 public:
+    MaxHeap() {}
 
-    void construir(const vector<KmerConteo>& datos) {
-        // TODO (Alessandro)
+    void construir(const std::vector<KmerConteo>& conteos) {
+        datos = conteos;
+        int n = datos.size();
+        for (int i = n / 2 - 1; i >= 0; i--) {
+            heapifyDown(i);
+        }
     }
 
-    // Inserta un k-mer con su conteo  -> O(log N)
     void insertar(const KmerConteo& kc) {
-        // TODO (Alessandro)
+        datos.push_back(kc);
+        heapifyUp(datos.size() - 1);
     }
 
     KmerConteo extraerMax() {
-        KmerConteo maximo;
-        maximo.kmer = "";
-        maximo.conteo = 0;
-        // TODO (Alessandro)
+        KmerConteo maximo = datos[0];
+        datos[0] = datos[datos.size() - 1];
+        datos.pop_back();
+        if (!datos.empty()) {
+            heapifyDown(0);
+        }
         return maximo;
     }
 
-    bool vacio() { return heap.empty(); }
-    int tamano() { return (int)heap.size(); }
+    void topN(const std::vector<KmerConteo>& conteos, int n) {
+        construir(conteos);
+        int total = datos.size();
+        if (n > total) n = total;
+        for (int i = 0; i < n; i++) {
+            KmerConteo m = extraerMax();
+            std::cout << m.kmer << "\t" << m.conteo << std::endl;
+        }
+    }
 };
 
-void topN(const vector<KmerConteo>& conteos, int n) {
-    // TODO (Alessandro):
-    //  1. Construir el heap con conteos
-    //  2. Llamar n veces a extraerMax() e imprimir cada resultado.
-    //  3. Cuidar el caso en que n sea mayor que la cantidad de k-mers.
-}
-
-#endif
+#endif // MAXHEAP_H_INCLUDED

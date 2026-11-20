@@ -1,26 +1,53 @@
-//Responsable: Alessandro
-//  Prompts de IA usados en este archivo
-//
-#ifndef PARSER_H
-#define PARSER_H
+#ifndef PARSER_H_INCLUDED
+#define PARSER_H_INCLUDED
 
 #include <iostream>
 #include <fstream>
-#include <string>
 #include <vector>
-#include "DNASequence.h"
-using namespace std;
+#include <string>
 
-vector<DNASequence> leerFasta(const string& ruta) {
-    vector<DNASequence> secuencias;
+struct DNASequence {
+    std::string id;
+    std::string sequence;
+};
 
-    // TODO (Alessandro):
-    //  1. Abrir el archivo con ifstream
-    //  2. Leer linea por linea con getline
-    //  3. Si la linea empieza con '>': empieza una secuencia nueva (id = linea sin el '>').
-    //  4. Si no: agregar la linea al 'sequence' de la secuencia actual.
+std::vector<DNASequence> leerFasta(const std::string& ruta) {
+    std::vector<DNASequence> secuencias;
+    std::ifstream archivo(ruta);
+    if(!archivo.is_open()) {
+        return secuencias;
+    }
 
+    std::string linea;
+    DNASequence actual;
+    bool tieneActual = false;
+
+    while (std::getline(archivo, linea)) {
+        if (!linea.empty() && linea[linea.size() - 1] == '\r') {
+            linea = linea.substr(0, linea.size() - 1);
+        }
+        if (linea.empty()) continue;
+
+        if (linea[0] == '>') {
+            if (tieneActual) {
+                secuencias.push_back(actual);
+            }
+            actual.id = linea.substr(1);
+            actual.sequence = "";
+            tieneActual = true;
+        } else {
+            actual.sequence = actual.sequence + linea;
+        }
+    }
+
+    if (tieneActual) {
+        secuencias.push_back(actual);
+    }
+    archivo.close();
     return secuencias;
+
+
 }
 
-#endif
+
+#endif // PARSER_H_INCLUDED
