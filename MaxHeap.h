@@ -1,3 +1,12 @@
+// Responsable: Alessandro
+// Prompts de IA usados en este archivo:
+//
+// 1. "Elabora el esqueleto de una clase MaxHeap que guarde pares (k-mer, conteo): los
+//    atributos y las funciones heapifyUp, heapifyDown, construir, insertar, extraerMax y
+//    topN, sin implementarlas."
+//
+// 2. "Revisa mi MaxHeap.h: verifica que heapifyDown compare bien con ambos hijos y que
+//    topN no falle si n es mayor que la cantidad de k-mers. Senalame los errores."
 #ifndef MAXHEAP_H_INCLUDED
 #define MAXHEAP_H_INCLUDED
 

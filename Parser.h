@@ -1,3 +1,11 @@
+// Responsable: Alessandro
+// Prompts de IA usados en este archivo:
+//
+// 1. "Explicame como esta organizado un archivo FASTA y que pasos deberia seguir para
+//    leerlo linea por linea y separar el identificador de la secuencia."
+//
+// 2. "Revisa mi funcion leerFasta: el programa no encuentra las secuencias por su ID.
+//    Indicame donde esta el error y por que ocurre."
 #ifndef PARSER_H_INCLUDED
 #define PARSER_H_INCLUDED
 
@@ -5,11 +13,8 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include "DNASequence.h"
 
-struct DNASequence {
-    std::string id;
-    std::string sequence;
-};
 
 std::vector<DNASequence> leerFasta(const std::string& ruta) {
     std::vector<DNASequence> secuencias;

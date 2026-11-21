@@ -1,3 +1,12 @@
+// Responsable: Alessandro
+// Prompts de IA usados en este archivo:
+//
+// 1. "Explicame el metodo para construir el grafo de 2-mers: como se cortan los pares,
+//     como se calcula el peso 1/(j-i)^beta y como pasar cada 2-mer a
+//    un indice de 0 a 15 para la matriz."
+//
+// 2. "Revisa mi Grafo.h con el ejemplo TCATTAGCAGTTAGCAGC y beta = 1: verifica que los
+//    pesos de la matriz sean iguales al enunciado y señalame los errores."
 #ifndef GRAFO_H_INCLUDED
 #define GRAFO_H_INCLUDED
 
@@ -23,6 +32,7 @@ void grafoKmers(const std::string& secuencia, double beta) {
     int n = secuencia.size();
 
     std::vector<std::string> pares;
+    std::vector<int> posiciones;
     std::vector<int> indices;
     for (int i = 0; i + 1 < n; i += 2) {
         std::string par = "";
@@ -32,6 +42,7 @@ void grafoKmers(const std::string& secuencia, double beta) {
         if (idx != -1) {
             pares.push_back(par);
             indices.push_back(idx);
+            posiciones.push_back(i / 2);
         }
     }
 
@@ -47,7 +58,7 @@ void grafoKmers(const std::string& secuencia, double beta) {
         for (int j = i + 1; j < m; j++) {
             int u = indices[i];
             int v = indices[j];
-            double peso = 1.0 / std::pow((double)(j - i), beta);
+            double peso = 1.0 / std::pow((double)(posiciones[j] - posiciones[i]), beta);
             matriz[u][v] = matriz[u][v] + peso;
         }
     }

@@ -1,6 +1,11 @@
 //responsable: Sebastian
 //  Prompts de IA usados en este archivo;
-
+// 1. "Dame una estructura general para el menu de texto de main.cpp: que opciones deberia
+//    tener para cargar el archivo, buscar una secuencia, contar k-mers, mostrar el top n,
+//    imprimir la matriz del grafo y comparar double hashing con linear probing."
+//
+// 2. "Revisa mi main.cpp: que pasa si el usuario escribe letras en vez de numeros o un k
+//    fuera de rango. Señalame los errores y por que ocurren."
 #include <iostream>
 #include <string>
 #include <vector>
@@ -111,7 +116,8 @@ int main() {
                 int n = pedirEntero("Cuantos k-mers mostrar", 1, 1000);
                 TablaKmers tk(k);
                 tk.contar(s->sequence);
-                topN(tk.obtenerTodos(), n);
+                MaxHeap h;
+                h.topN(tk.obtenerTodos(), n);
                 break;
             }
             case 5: {
